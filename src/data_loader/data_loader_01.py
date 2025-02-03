@@ -87,6 +87,7 @@ def build_dataframe(path: str):
         pd.DataFrame: _description_
     """
     data_path = Path(path)
+    print(f"data_path = {data_path.absolute()}")
     Video_Path = list(data_path.glob(r"fights/*.avi")) + list(data_path.glob(r"noFights/*.mpg"))
     Video_Labels = list(
         map(lambda x: os.path.split(os.path.split(x)[0])[1], Video_Path)
@@ -107,7 +108,6 @@ def build_dataframe(path: str):
 
 def build_dataset(train, test, validation):
     """
-
     Args:
         train (Pandas DataFrame): [video_path, label] train set
         test (Pandas DataFrame): [video_path, label] test set

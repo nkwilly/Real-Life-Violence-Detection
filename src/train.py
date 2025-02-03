@@ -50,6 +50,7 @@ DATADIR = "dataset"
 def main():
     # Build Dataset
     train, test, validation = build_dataframe(path=DATADIR)
+    
     tr, ts, val = build_dataset(train, test, validation)
 
     print(f"tr = {tr} val = {val} ts = {ts}")
@@ -78,7 +79,7 @@ def main():
         ],
     )
 
-    print(f"model = {vit_model}")
+    print(f"ts = {ts} tf = {tf}")
 
     TRAINER = ModelTrainer(vit_model, ts, val, TRAIN_CONFIG)
 

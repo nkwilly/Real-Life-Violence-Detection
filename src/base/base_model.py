@@ -9,7 +9,7 @@ class BaseModel:
             raise Exception("You have to build the model first.")
 
         print("Saving model...")
-        self.model.save_weights(checkpoint_path)
+        self.model.save("checkpoints/violence.keras")
         print("Model saved")
 
     # load latest checkpoint from the experiment path defined in the config file
