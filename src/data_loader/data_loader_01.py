@@ -25,7 +25,7 @@ class VideoDataset:
     def __init__(self, df: pd.DataFrame, n_frames: int = 32):
         self.n_frames = n_frames
         self.dataframe = df
-        self.class_names = {"NonViolence": 0, "Violence": 1}
+        self.class_names = {"noFights": 0, "fights": 1}
 
     def load_video(self, path: Path, SEQUENCE_LENGTH: int):
         """Creates list of video frames tensors
@@ -34,6 +34,8 @@ class VideoDataset:
             frames: numpy array of tensor frames
         """
         frames = list()
+
+        print(f"path = {path}")
 
         Video_Caption = cv2.VideoCapture(str(path))
 
@@ -85,10 +87,12 @@ def build_dataframe(path: str):
         pd.DataFrame: _description_
     """
     data_path = Path(path)
-    Video_Path = list(data_path.glob(r"*/*.mp4"))
+    Video_Path = list(data_path.glob(r"fights/*.avi")) + list(data_path.glob(r"noFights/*.mpg"))
     Video_Labels = list(
         map(lambda x: os.path.split(os.path.split(x)[0])[1], Video_Path)
     )
+    print('\n\n\n', Video_Labels, '\n\n\n')
+
     dataframe = pd.DataFrame({"Video_Path": Video_Path, "Labels": Video_Labels})
     tr, val, ts = np.split(
         dataframe.sample(frac=1, random_state=SEED),

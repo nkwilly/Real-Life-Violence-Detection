@@ -5,6 +5,7 @@ from dotmap import DotMap
 from data_loader.data_loader_01 import *
 from models.model_01 import VisionTransformer
 from trainers.trainer import ModelTrainer
+from ultralytics import YOLO
 
 TRAIN_CONFIG = {
     "exp": {"name": "Experiment 1"},
@@ -15,7 +16,7 @@ TRAIN_CONFIG = {
         "save_pickle": True,
     },
     "callbacks": {
-        "checkpoint_dir": "/checkpoint/"
+        "checkpoint_dir": "checkpoint/"
         + datetime.datetime.now().strftime("%Y%m%d-%H%M%S")
         + "/",
         "checkpoint_monitor": "val_loss",
@@ -43,13 +44,15 @@ MLP_HIDDEN = EMBED_SIZE * 4
 ENCODER_BLOCKS = 5
 SEQUENCE_LENGTH = 16
 AUTOTUNE = tf.data.AUTOTUNE
-DATADIR = "./data/Real Life Violence Dataset"
+DATADIR = "dataset"
 
 
 def main():
     # Build Dataset
     train, test, validation = build_dataframe(path=DATADIR)
     tr, ts, val = build_dataset(train, test, validation)
+
+    print(f"tr = {tr} val = {val} ts = {ts}")
     # Build Model
 
     vit_model = VisionTransformer(
@@ -75,7 +78,10 @@ def main():
         ],
     )
 
+    print(f"model = {vit_model}")
+
     TRAINER = ModelTrainer(vit_model, ts, val, TRAIN_CONFIG)
+
     TRAINER.train()
 
 

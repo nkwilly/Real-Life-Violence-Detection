@@ -50,7 +50,9 @@ class Projection(keras.layers.Layer):
         self.reshape = keras.layers.Reshape(target_shape=(-1, embed_size))
 
     def build(self, input_shape):
+        print(f"input_shape = {input_shape}")
         bz, d, h, w, c = input_shape
+        d, h, w, c = 16, 224, 224, 3
         self.n_patches = (
             d * h * w // self.patch_size**3
         )  # (n_patches) = Hight * width * Depth / (Patch size) ^3
